@@ -1,5 +1,6 @@
 """ Module for testing users API """
 
+import os
 import json
 import unittest
 from pymongo import MongoClient
@@ -28,8 +29,9 @@ class UsersTestCase(unittest.TestCase):
 
     def config_database(self):
         """ Configure database test collections """
-        client = MongoClient(MONGO_URI_TESTS)
-        database = MONGO_URI_TESTS.split('/')[-1]
+        mongo_uri = os.getenv('MONGO_URI_TESTS', MONGO_URI_TESTS)
+        client = MongoClient(mongo_uri)
+        database = mongo_uri.split('/')[-1]
         self.col_users = client[database].users
         self.col_tokens = client[database].tokens
 
@@ -71,7 +73,7 @@ class UsersTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content_type, 'application/json')
         self.assertEqual(len(content), 1)
-        self.assertEqual(content[0], {'username': 'foo'})
+        self.assertEqual(content, [{'username': 'foo'}])
 
 
     def test_get_user(self):
@@ -162,6 +164,11 @@ class UsersTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 409)
         self.assertEqual(response.content_type, 'text/html; charset=utf-8')
         self.assertEqual(content, 'Usuário foo já existe')
+
+
+    def tearDown(self):
+        # apagar todos documentos
+        self.database_cleanup()
 
 
 if __name__ == '__main__':

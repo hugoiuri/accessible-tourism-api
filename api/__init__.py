@@ -9,9 +9,9 @@ def create_app(test_config=None):
     app = Flask(__name__)
 
     if test_config is None:
-        app.config['MONGO_URI'] = MONGO_URI
+        app.config['MONGO_URI'] = os.getenv('MONGO_URI', MONGO_URI)
     else:
-        app.config['MONGO_URI'] = MONGO_URI_TESTS
+        app.config['MONGO_URI'] = os.getenv('MONGO_URI_TESTS', MONGO_URI_TESTS)
 
 
     # app.config['MONGO_URI'] = MONGO_URI
