@@ -13,7 +13,6 @@ def create_app(test_config=None):
     else:
         app.config['MONGO_URI'] = os.getenv('MONGO_URI_TESTS', MONGO_URI_TESTS)
 
-
     # app.config['MONGO_URI'] = MONGO_URI
     app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = False
     app_context = app.app_context()
@@ -24,9 +23,9 @@ def create_app(test_config=None):
     database.get_db()
 
     # apply the blueprints to the app
-    from api import auth
+    from api import users, auth, flights
     app.register_blueprint(auth.BP)
-    from api import users
     app.register_blueprint(users.BP)
+    app.register_blueprint(flights.BP)
 
     return app
