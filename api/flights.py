@@ -11,23 +11,37 @@ BP = Blueprint('flights', __name__)
 COL_FLIGHTS = g.db.flights
 
 
-@BP.route('/v1/flights', methods=['GET'])
-@jwt_required
 def get_all_flights():
     """ Get all flights """
+    res = COL_FLIGHTS.find()
+    flights = json_util.dumps(list(res))
+    return flights
+
+
+def search_flights():
+    """ Search flights by filter """
+    # origin = args['origin']
+    # destination = args['destination']
+    # goingDate = args['goingDate']
+    # returnsDate = args['returnsDate']
+
+    res = COL_FLIGHTS.find().limit(10)
+    flights = json_util.dumps(list(res))
+
+    return flights
+
+@BP.route('/v1/flights', methods=['GET'])
+@jwt_required
+def get_flights():
+    """ Get flights """
     response = None
     args = request.args.to_dict()
 
     if len(args) is 0:
-        res = COL_FLIGHTS.find()
-        flights = json_util.dumps(list(res))
-
-        response = Response(
-            flights, status=200, mimetype=JSON_MIME_TYPE)
+        flights = get_all_flights()
+        response = Response(flights, status=200, mimetype=JSON_MIME_TYPE)
     else:
-        res = COL_FLIGHTS.find({'departure': args['departure'],
-                                'arrival': args['arrival']})
-        flights = json_util.dumps(list(res))
+        flights = search_flights()
 
         response = Response(
             flights, status=200, mimetype=JSON_MIME_TYPE)
