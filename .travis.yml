@@ -1,0 +1,13 @@
+language: python
+python:  
+  - "3.6"
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+# command to run tests
+before_script:
+  - export FLASK_APP="$TRAVIS_BUILD_DIR/app.py"
+  - export FLASK_DEBUG=1
+
+script: 
+  - make test
