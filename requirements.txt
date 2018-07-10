@@ -4,3 +4,4 @@ Flask-PyMongo
 pyjwt
 gunicorn
 pytest
+pylint

@@ -1,20 +1,22 @@
-from flask import Blueprint, Response, request, json, g
+""" Users API """
+
+from flask import Blueprint, Response, request, g
 from bson import json_util
 from werkzeug.security import generate_password_hash
 from api.auth import jwt_required
 
 JSON_MIME_TYPE = 'application/json'
 
-bp = Blueprint('users', __name__)
+BP = Blueprint('users', __name__)
 
-col_users = g.db.users
+COL_USERS = g.db.users
 
-@bp.route('/v1/users', methods=['GET'])
+@BP.route('/v1/users', methods=['GET'])
 @jwt_required
 def get_all_users():
-    """poc"""
+    """ Get all users """
 
-    res = col_users.find({}, {'_id': 0, 'password': 0})
+    res = COL_USERS.find({}, {'_id': 0, 'password': 0})
 
     response = Response(
         json_util.dumps(list(res)), status=200, mimetype=JSON_MIME_TYPE)
@@ -22,7 +24,7 @@ def get_all_users():
     return response
 
 
-@bp.route('/v1/users', methods=['POST'])
+@BP.route('/v1/users', methods=['POST'])
 @jwt_required
 def insert_user():
     """ Insert same user """
@@ -32,23 +34,23 @@ def insert_user():
         return 'Bad Request', 400
 
     username = data['username']
-    
-    user = col_users.find_one({'username': username}, {'_id': 0, 'username': 1})
+    user = COL_USERS.find_one({'username': username}, {'_id': 0, 'username': 1})
 
     if user is None:
         data['password'] = generate_password_hash(data['password'])
-        col_users.insert_one(data)
+        COL_USERS.insert_one(data)
         return 'Usuário ' + data['username'] + ' criado', 201
-    else:
-        return 'Usuário ' + data['username'] + ' já existe', 409
+
+    return 'Usuário ' + data['username'] + ' já existe', 409
 
 
-@bp.route('/v1/users/<username>', methods=['GET'])
+@BP.route('/v1/users/<username>', methods=['GET'])
 @jwt_required
 def get_user(username):
-    user = col_users.find_one({'username': username}, {'_id': 0, 'password': 0})
-    if user == None: 
+    """ Get user by username """
+    user = COL_USERS.find_one({'username': username}, {'_id': 0, 'password': 0})
+    if user is None:
         return 'Usuário não encontrado', 404
-    else:
-        response = Response(json_util.dumps(user), status=200, mimetype=JSON_MIME_TYPE)
-        return response
+
+    response = Response(json_util.dumps(user), status=200, mimetype=JSON_MIME_TYPE)
+    return response
