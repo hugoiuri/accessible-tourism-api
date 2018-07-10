@@ -85,14 +85,9 @@ def parse_token(req):
 
 
 def authenticate(username, password):
-    print(username)
-    print(password)
     res = col_users.find({})
 
-    print(json_util.dumps(list(res)))
-
     user = col_users.find_one({'username': username})
-    print(user)
     if user and check_password_hash(user['password'], password):
         return user
     else:

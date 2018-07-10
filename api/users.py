@@ -38,9 +38,9 @@ def insert_user():
     if user is None:
         data['password'] = generate_password_hash(data['password'])
         col_users.insert_one(data)
-        return 'usuario ' + data['username'] + ' criado.', 201
+        return 'Usuário ' + data['username'] + ' criado', 201
     else:
-        return 'usuario ' + data['username'] + ' já existe.', 409
+        return 'Usuário ' + data['username'] + ' já existe', 409
 
 
 @bp.route('/v1/users/<username>', methods=['GET'])
@@ -50,4 +50,5 @@ def get_user(username):
     if user == None: 
         return 'Usuário não encontrado', 404
     else:
-        return json_util.dumps(user), 200
+        response = Response(json_util.dumps(user), status=200, mimetype=JSON_MIME_TYPE)
+        return response

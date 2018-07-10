@@ -3,3 +3,4 @@ pymongo
 Flask-PyMongo
 pyjwt
 gunicorn
+pytest
