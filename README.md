@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/hugoiuri/accessible-tourism-api.svg?branch=master)](https://travis-ci.org/hugoiuri/accessible-tourism-api)
-![Coveralls github](https://img.shields.io/coveralls/github/hugoiuri/accessible-tourism-api.svg)
+[![Coverage Status](https://coveralls.io/repos/github/hugoiuri/accessible-tourism-api/badge.svg?branch=master)](https://coveralls.io/github/hugoiuri/accessible-tourism-api?branch=master)
 
 
 # Accessible Tourism API
