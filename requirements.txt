@@ -6,3 +6,4 @@ gunicorn
 pytest
 pylint
 gunicorn
+setuptools

@@ -13,7 +13,6 @@ def create_app(test_config=None):
     else:
         app.config['MONGO_URI'] = os.getenv('MONGO_URI_TESTS', MONGO_URI_TESTS)
 
-    # app.config['MONGO_URI'] = MONGO_URI
     app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = False
     app_context = app.app_context()
     app_context.push()

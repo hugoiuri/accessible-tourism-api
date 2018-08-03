@@ -20,11 +20,6 @@ def get_all_flights():
 
 def search_flights():
     """ Search flights by filter """
-    # origin = args['origin']
-    # destination = args['destination']
-    # goingDate = args['goingDate']
-    # returnsDate = args['returnsDate']
-
     res = COL_FLIGHTS.find().limit(10)
     flights = json_util.dumps(list(res))
 
